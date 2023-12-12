@@ -52,12 +52,12 @@ fetch("js/data/earthMeteorites.json")
 });
 
 
-// function taulaDades() {
+function taulaDades() {
 	arrDades = {
 		name: pokemon,
 		nom: municipi,
 	}
-	// for(let i = 0; i < arrDades.length; i++) {
+	for(let i = 0; i < arrDades.length; i++) {
 		console.table(arrDades);
-	// }
-// }
+	}
+}
