@@ -6,7 +6,7 @@ fetch("js/data/pokemon.json")
 .then((data) => {
 	let noms = data.pokemon;
 	noms.forEach((obj) => {
-		dades.push({ pokemon: obj.name});
+		dades.push({ Pokemon: obj.name});
 	});	 
 });
 
@@ -18,7 +18,7 @@ fetch("js/data/municipis.json")
 	municipis.forEach((obj, index) => {
 		dades[index] = {
 			...dades[index],
-			municipi: obj.municipi_nom
+			Municipis: obj.municipi_nom
 		}
 	});	
 });
@@ -31,7 +31,7 @@ fetch("js/data/movies.json")
 	titles.forEach((obj, index) => {
 		dades[index] = {
 			...dades[index],
-			title: obj.title
+			Pelicules: obj.title
 		}
 	});
 });
@@ -44,7 +44,7 @@ fetch("js/data/earthMeteorites.json")
 	meteorits.forEach((obj, index) => {
 		dades[index] = {
 			...dades[index],
-			meteorit: obj.name
+			earthMeteorite: obj.name
 		}
 	});
 	console.table(dades);
