@@ -1,63 +1,51 @@
-			
-// POKEMONS
-
-let dades;
-let pokemon = [];
-let municipi = [];
-let movie = [];
-let earthMeteorites = [];
+let dades = [];
 
 // POKEMONS
 fetch("js/data/pokemon.json")
 .then((response) => response.json())
 .then((data) => {
-	dades = data.pokemon;
-	//console.log(dades[0].name);		
-	for(let i = 0; i < dades.length; i++) {
-		pokemon.push(dades[i].name);
-	}
+	let noms = data.pokemon;
+	noms.forEach((obj) => {
+		dades.push({ pokemon: obj.name});
+	});	 
 });
 
 // MUNICIPIS
 fetch("js/data/municipis.json")
 .then((response) => response.json())
 .then((data) => {
-	dades = data.elements;			
-	// console.log(dades)
-	for (let i = 0; i < dades.length; i++) {
-	 	municipi.push(dades[i].municipi_nom);
-	}
+	let municipis = data.elements;
+	municipis.forEach((obj, index) => {
+		dades[index] = {
+			...dades[index],
+			municipi: obj.municipi_nom
+		}
+	});	
 });
 
 // MOVIES
 fetch("js/data/movies.json")
 .then((response) => response.json())
 .then((data) => {
-	dades = data.movies;			
-	// console.log(dades)
-	for (let i = 0; i < dades.length; i++) {
-	 	movie.push(dades[i].title);
-	}
+	let titles = data.movies;
+	titles.forEach((obj, index) => {
+		dades[index] = {
+			...dades[index],
+			title: obj.title
+		}
+	});
 });
 
 // METEORITS
 fetch("js/data/earthMeteorites.json")
 .then((response) => response.json())
 .then((data) => {
-	dades = data;		
-	// console.log(dades)
-	for (let i = 0; i < dades.length; i++) {
-	 	earthMeteorites.push(dades[i].name);
-	}
+	let meteorits = data;		
+	meteorits.forEach((obj, index) => {
+		dades[index] = {
+			...dades[index],
+			meteorit: obj.name
+		}
+	});
+	console.table(dades);
 });
-
-
-function taulaDades() {
-	arrDades = {
-		name: pokemon,
-		nom: municipi,
-	}
-	for(let i = 0; i < arrDades.length; i++) {
-		console.table(arrDades);
-	}
-}
