@@ -1,4 +1,7 @@
+/* Part 0 */
 let dades = [];
+let pokemon = [];
+
 
 // POKEMONS
 fetch("js/data/pokemon.json")
@@ -7,6 +10,8 @@ fetch("js/data/pokemon.json")
 	let noms = data.pokemon;
 	noms.forEach((obj) => {
 		dades.push({ Pokemon: obj.name});
+		pokemon.push(obj);
+		printList();
 	});	 
 });
 
@@ -47,5 +52,34 @@ fetch("js/data/earthMeteorites.json")
 			earthMeteorite: obj.name
 		}
 	});
-	console.table(dades);
+	// console.table(dades);
 });
+
+/* Part 1 */
+
+// Ordena asc o desc
+function orderList(ordre) {
+	let ordenat = ordre == 'ASC' ? pokemon.sort() : pokemon.reverse() ;
+	console.log(ordenat);
+	// return ordenat;
+}
+
+// function searchList() {
+	
+	// }
+	
+	// function calcMitjana() {}
+	
+	function printList() {
+		let taula = "<table>";
+		for(let i = 0; i < pokemon.length; i++) {
+			taula+="<tr>";
+			taula+=`<td>${pokemon[i].num}</td>`;
+			taula+=`<td><img src="${pokemon[i].img}"/></td>`;
+			taula+=`<td>${pokemon[i].name}</td>`;
+			taula+=`<td>${pokemon[i].weight}</td>`;
+			taula+="</tr>";
+		}
+	taula+="</table>";
+	document.getElementById("resultat").innerHTML = taula;
+}
