@@ -1,0 +1,43 @@
+* {
+    margin: 0;
+    font-family: 'Oswald', sans-serif;
+}
+
+table {
+    width: 95vw;
+    border-collapse: collapse;
+}
+
+th {
+    padding: 1em;
+    border-bottom: 2px solid rgb(206, 206, 206);
+}
+
+tr {
+    border-top: 2px solid rgb(226, 226, 226);
+}
+
+td { 
+    text-align: center;
+}
+
+#btn-func {
+    margin: 2em;
+}
+
+#resultat {
+    padding: 1em;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+button {
+    background-color: rgb(35, 53, 151);
+    border: none;
+    padding: .8em;
+    margin: .2em;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}

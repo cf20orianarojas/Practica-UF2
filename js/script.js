@@ -1,7 +1,7 @@
-/* Part 0 */
 let dades = [];
 let pokemon = [];
 
+/* Part 0 */
 
 // POKEMONS
 fetch("js/data/pokemon.json")
@@ -10,8 +10,8 @@ fetch("js/data/pokemon.json")
 	let noms = data.pokemon;
 	noms.forEach((obj) => {
 		dades.push({ Pokemon: obj.name});
-		pokemon.push(obj);
-		printList();
+		pokemon.push({ num: obj.num, imatge: obj.img, nom: obj.name, pes: obj.weight });
+		printList(pokemon);
 	});	 
 });
 
@@ -59,27 +59,45 @@ fetch("js/data/earthMeteorites.json")
 
 // Ordena asc o desc
 function orderList(ordre) {
-	let ordenat = ordre == 'ASC' ? pokemon.sort() : pokemon.reverse() ;
-	console.log(ordenat);
-	// return ordenat;
+	let ordenat = [];
+	if (ordre === 'ASC') {
+		ordenat = pokemon.sort((a,b) => {
+			if (a.nom - b.nom) return -1;
+			if (a.nom > b.nom) return 1;
+			return 0;
+		});
+	} else {
+		ordenat = pokemon.reverse((a,b) => {
+			if (b.nom < a.nom) return -1; 
+			if (b.nom > a.nom) return 1;
+			return 0; 
+		});
+	}
+	printList(ordenat);
+	return ordenat;
 }
 
-// function searchList() {
+function searchList() {	
+	let posicio = prompt("Que cerques?");
+	pokemon.forEach((obj) => {
+		obj.indexOf(posicio);
+	});
+	console.log(resultat);
+}
 	
-	// }
+// function calcMitjana() {}
 	
-	// function calcMitjana() {}
-	
-	function printList() {
-		let taula = "<table>";
-		for(let i = 0; i < pokemon.length; i++) {
-			taula+="<tr>";
-			taula+=`<td>${pokemon[i].num}</td>`;
-			taula+=`<td><img src="${pokemon[i].img}"/></td>`;
-			taula+=`<td>${pokemon[i].name}</td>`;
-			taula+=`<td>${pokemon[i].weight}</td>`;
-			taula+="</tr>";
-		}
+function printList(array) {
+	let taula = "<table>";
+	taula+="<th>#</th><th>Imatge</th><th>Nom</th><th>Pes</th>"
+	array.forEach((obj) => {
+		taula+="<tr>";
+			taula+=`<td>${obj.num}</td>`;
+			taula+=`<td><img src="${obj.imatge}"/></td>`; 
+			taula+=`<td>${obj.nom}</td>`;
+			taula+=`<td>${obj.pes}</td>`;
+		taula+="</tr>";
+	});
 	taula+="</table>";
 	document.getElementById("resultat").innerHTML = taula;
 }

@@ -5,16 +5,18 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
+	<link rel="stylesheet" href="style/style.css">
 </head>
 <body>
-	<h1>Pràctica UF2</h1>
 	<script src="js/script.js"></script>
 	<!-- Funcions -->
-	<button onclick="location.reload()">Iniciar</button> <!-- Inicialitza tot -->
-	<button onclick="orderList('ASC')">Order ASC</button> <!-- Ordena ascendent -->
-	<button onclick="orderList('DESC')">Order DESC</button> <!-- Ordena descendent-->
-	<button>Search</button>
-	<button>Mitjana pes</button>  <!-- Mitja -->
+	<div id="btn-func">
+		<button onclick="location.reload()">Iniciar</button> <!-- Inicialitza tot -->
+		<button onclick="orderList('ASC')">Order ASC</button> <!-- Ordena ascendent -->
+		<button onclick="orderList('DESC')">Order DESC</button> <!-- Ordena descendent-->
+		<button onclick="searchList()">Search</button>
+		<button>Mitjana pes</button>  <!-- Mitja -->
+	</div>
 	<div id="resultat"></div>
 </body>
 </html>
