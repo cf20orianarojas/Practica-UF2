@@ -77,16 +77,23 @@ function orderList(ordre) {
 	return ordenat;
 }
 
+// Cerca el objecte (per el num o per el nom) i mostra el index de la posició
 function searchList() {	
 	let posicio = prompt("Que cerques?");
-	pokemon.forEach((obj) => {
-		obj.indexOf(posicio);
+	let index = -1;
+	pokemon.forEach(obj => {
+		if (obj.num == posicio || obj.nom == posicio) {
+			index = pokemon.indexOf(obj);
+		}
 	});
-	console.log(resultat);
+	console.log(index);
 }
 	
-// function calcMitjana() {}
-	
+function calcMitjana() {
+
+}
+
+// imprime la taula
 function printList(array) {
 	let taula = "<table>";
 	taula+="<th>#</th><th>Imatge</th><th>Nom</th><th>Pes</th>"
