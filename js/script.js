@@ -10,7 +10,7 @@ fetch("js/data/pokemon.json")
 	let noms = data.pokemon;
 	noms.forEach((obj) => {
 		dades.push({ Pokemon: obj.name});
-		pokemon.push({ num: obj.num, imatge: obj.img, nom: obj.name, pes: obj.weight });
+		pokemon.push({ num: obj.num, imatge: obj.img, nom: obj.name, pes: obj.weight.substring(0, obj.weight.length-3)});
 		printList(pokemon);
 	});	 
 });
@@ -82,11 +82,12 @@ function searchList() {
 	let posicio = prompt("Que cerques?");
 	let index = -1;
 	pokemon.forEach(obj => {
-		if (obj.num == posicio || obj.nom == posicio) {
+		if (obj.num == posicio || obj.nom.toLowerCase() == posicio.toLowerCase()) {
 			index = pokemon.indexOf(obj);
 		}
 	});
 	console.log(index);
+	return index;
 }
 	
 function calcMitjana() {
@@ -102,7 +103,7 @@ function printList(array) {
 			taula+=`<td>${obj.num}</td>`;
 			taula+=`<td><img src="${obj.imatge}"/></td>`; 
 			taula+=`<td>${obj.nom}</td>`;
-			taula+=`<td>${obj.pes}</td>`;
+			taula+=`<td>${obj.pes} kg</td>`;
 		taula+="</tr>";
 	});
 	taula+="</table>";
