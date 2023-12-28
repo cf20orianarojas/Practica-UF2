@@ -10,7 +10,7 @@ fetch("js/data/pokemon.json")
 	let noms = data.pokemon;
 	noms.forEach((obj) => {
 		// el peso sera float para hacer la media luego
-		let pes = parseFloat(obj.weight.substring(0, obj.weight.length-3)); 
+		let pes = obj.weight.substring(0, obj.weight.length-3); 
 		dades.push({ Pokemon: obj.name});
 		pokemon.push({ num: obj.num, imatge: obj.img, nom: obj.name, pes: pes});
 		printList(pokemon);
@@ -88,18 +88,22 @@ function searchList() {
 			index = pokemon.indexOf(obj);
 		}
 	});
-	console.log(index);
+	alert(`El element "${posicio}" esta en la posició nº ${index} del array`);
 	return index;
 }
 	
 function calcMitjana(valor) {
 	let mitja = 0, suma = 0;
+	let div = document.getElementById('btn-func');
+	let p = document.createElement('p');
 	pokemon.forEach((pokemon) => {
 		// suma el pes total de tots els pokemons
-		suma+=pokemon.pes;
+		suma+=parseInt(pokemon.pes);
 	});
 	mitja = suma / pokemon.length;
-	console.log(mitja.toFixed(2));
+	p.innerHTML = mitja.toFixed(2) + ' kg';
+	div.appendChild(p);
+	alert(`Mitja: ${mitja.toFixed(2)} kg`);
 }
 
 // imprime la taula
