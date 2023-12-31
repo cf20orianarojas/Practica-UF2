@@ -121,3 +121,5 @@ function printList(array) {
 	taula+="</table>";
 	document.getElementById("resultat").innerHTML = taula;
 }
+
+/* Part 2 */
