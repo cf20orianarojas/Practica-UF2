@@ -13,7 +13,7 @@ fetch("js/data/pokemon.json")
 		let pes = obj.weight.substring(0, obj.weight.length-3); 
 		dades.push({ Pokemon: obj.name});
 		pokemon.push({ num: obj.num, imatge: obj.img, nom: obj.name, pes: pes});
-		printList(pokemon);
+		// printList(pokemon);
 	});	 
 });
 
@@ -75,7 +75,7 @@ function orderList(ordre) {
 			return 0; 
 		});
 	}
-	printList(ordenat);
+	// printList(ordenat);
 	return ordenat;
 }
 
@@ -107,19 +107,46 @@ function calcMitjana(valor) {
 }
 
 // imprime la taula
-function printList(array) {
-	let taula = "<table>";
-	taula+="<th>#</th><th>Imatge</th><th>Nom</th><th>Pes</th>"
-	array.forEach((obj) => {
-		taula+="<tr>";
-			taula+=`<td>${obj.num}</td>`;
-			taula+=`<td><img src="${obj.imatge}"/></td>`; 
-			taula+=`<td>${obj.nom}</td>`;
-			taula+=`<td>${obj.pes} kg</td>`;
-		taula+="</tr>";
-	});
-	taula+="</table>";
-	document.getElementById("resultat").innerHTML = taula;
-}
+// function printList(array) {
+// 	let taula = "<table>";
+// 	taula+="<th>#</th><th>Imatge</th><th>Nom</th><th>Pes</th>"
+// 	array.forEach((obj) => {
+// 		taula+="<tr>";
+// 			taula+=`<td>${obj.num}</td>`;
+// 			taula+=`<td><img src="${obj.imatge}"/></td>`; 
+// 			taula+=`<td>${obj.nom}</td>`;
+// 			taula+=`<td>${obj.pes} kg</td>`;
+// 		taula+="</tr>";
+// 	});
+// 	taula+="</table>";
+// 	document.getElementById("resultat").innerHTML = taula;
+// }
 
 /* Part 2 */
+
+document.addEventListener('DOMContentLoaded', function () {
+	const data = {
+		labels: ['Red', 'Green', 'Yellow', 'Grey', 'Blue'],
+		datasets: [{
+		  label: 'My First Dataset',
+		  data: [11, 16, 7, 3, 14],
+		  backgroundColor: [
+			'rgb(255, 99, 132)',
+			'rgb(75, 192, 192)',
+			'rgb(255, 205, 86)',
+			'rgb(201, 203, 207)',
+			'rgb(54, 162, 235)']
+		}]
+	};
+	
+	const config = {
+		type: 'polarArea',
+		data: data,
+		options: {}
+	};
+	
+	const myChart = new Chart(
+		document.getElementById('myChart'),
+		config
+	);
+});
