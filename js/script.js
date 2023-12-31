@@ -1,6 +1,12 @@
 let dades = [];
 let pokemon = [];
 
+// Array per a el gràfic Chart
+let arrayLabels = [];
+let arrayDadesGraf = [];
+let backgroundColor = [];
+let borderColor = [];
+
 /* Part 0 */
 
 // POKEMONS
@@ -12,10 +18,13 @@ fetch("js/data/pokemon.json")
 		// el peso sera float para hacer la media luego
 		let pes = obj.weight.substring(0, obj.weight.length-3); 
 		dades.push({ Pokemon: obj.name});
+		arrayLabels.push(obj.type);
 		pokemon.push({ num: obj.num, imatge: obj.img, nom: obj.name, pes: pes});
 		// printList(pokemon);
 	});	 
 });
+
+console.log(arrayLabels);
 
 // MUNICIPIS
 fetch("js/data/municipis.json")
@@ -126,7 +135,7 @@ function calcMitjana(valor) {
 
 document.addEventListener('DOMContentLoaded', function () {
 	const data = {
-		labels: ['Red', 'Green', 'Yellow', 'Grey', 'Blue'],
+		labels: ['Vermell', 'Verd', 'Groc', 'Gris', 'Blau'],
 		datasets: [{
 		  label: 'My First Dataset',
 		  data: [11, 16, 7, 3, 14],
@@ -141,8 +150,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	
 	const config = {
 		type: 'polarArea',
-		data: data,
-		options: {}
+		data: data
 	};
 	
 	const myChart = new Chart(

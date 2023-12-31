@@ -47,3 +47,10 @@ p {
     padding: .5em;
     margin: .2em;
 }
+
+.chart-container {
+    margin: 0;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
