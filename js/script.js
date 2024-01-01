@@ -18,13 +18,13 @@ fetch("js/data/pokemon.json")
 		// el peso sera float para hacer la media luego
 		let pes = obj.weight.substring(0, obj.weight.length-3); 
 		dades.push({ Pokemon: obj.name});
-		arrayLabels.push(obj.type);
-		pokemon.push({ num: obj.num, imatge: obj.img, nom: obj.name, pes: pes});
+		pokemon.push({ num: obj.num, imatge: obj.img, nom: obj.name, pes: pes, tipo: obj.type});
 		// printList(pokemon);
-	});	 
+	});	
+	pokeChart();
 });
 
-console.log(arrayLabels);
+console.log(pokemon);
 
 // MUNICIPIS
 fetch("js/data/municipis.json")
@@ -133,7 +133,7 @@ function calcMitjana(valor) {
 
 /* Part 2 */
 
-document.addEventListener('DOMContentLoaded', function () {
+function pokeChart() {
 	const data = {
 		labels: ['Vermell', 'Verd', 'Groc', 'Gris', 'Blau'],
 		datasets: [{
@@ -157,4 +157,4 @@ document.addEventListener('DOMContentLoaded', function () {
 		document.getElementById('myChart'),
 		config
 	);
-});
+}
