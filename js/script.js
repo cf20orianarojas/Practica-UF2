@@ -14,17 +14,18 @@ fetch("js/data/pokemon.json")
 .then((response) => response.json())
 .then((data) => {
 	let noms = data.pokemon;
+	let tmp = [];
 	noms.forEach((obj) => {
 		// el peso sera float para hacer la media luego
-		let pes = obj.weight.substring(0, obj.weight.length-3); 
+		let pes = obj.weight.substring(0, obj.weight.length-3);
 		dades.push({ Pokemon: obj.name});
-		pokemon.push({ num: obj.num, imatge: obj.img, nom: obj.name, pes: pes, tipo: obj.type});
-		// printList(pokemon);
-	});	
+		pokemon.push({ num: obj.num, imatge: obj.img, nom: obj.name, pes: pes});
+		// obté tots els tipus
+		tmp.push(obj.type);
+	});
+	filtraValors(tmp);
 	pokeChart();
 });
-
-console.log(pokemon);
 
 // MUNICIPIS
 fetch("js/data/municipis.json")
@@ -135,7 +136,7 @@ function calcMitjana(valor) {
 
 function pokeChart() {
 	const data = {
-		labels: ['Vermell', 'Verd', 'Groc', 'Gris', 'Blau'],
+		labels: arrayLabels,
 		datasets: [{
 		  label: 'My First Dataset',
 		  data: [11, 16, 7, 3, 14],
@@ -157,4 +158,14 @@ function pokeChart() {
 		document.getElementById('myChart'),
 		config
 	);
+}
+
+function filtraValors(arr) {
+	let temp = arr.flat();
+	temp.forEach((obj) => {
+		if (!arrayLabels.includes(obj)) {
+			arrayLabels.push(obj);
+		}
+	}); 
+	// arrayLabels.push(...new Set(arr.flat())); ---> Set solo obtiene valores únicos
 }
