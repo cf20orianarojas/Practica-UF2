@@ -6,6 +6,7 @@ let arrayLabels = [];
 let arrayDadesGraf = [];
 let backgroundColor = [];
 let borderColor = [];
+let tmp = [];
 
 /* Part 0 */
 
@@ -14,7 +15,6 @@ fetch("js/data/pokemon.json")
 .then((response) => response.json())
 .then((data) => {
 	let noms = data.pokemon;
-	let tmp = [];
 	noms.forEach((obj) => {
 		// el peso sera float para hacer la media luego
 		let pes = obj.weight.substring(0, obj.weight.length-3);
@@ -23,7 +23,6 @@ fetch("js/data/pokemon.json")
 		// obté tots els tipus
 		tmp.push(obj.type);
 	});
-	filtraValors(tmp);
 	pokeChart();
 });
 
@@ -136,10 +135,10 @@ function calcMitjana(valor) {
 
 function pokeChart() {
 	const data = {
-		labels: arrayLabels,
+		labels: tiposLabels(tmp),
 		datasets: [{
 		  label: 'My First Dataset',
-		  data: [11, 16, 7, 3, 14],
+		  data: comptaElements(tmp),
 		  backgroundColor: [
 			'rgb(255, 99, 132)',
 			'rgb(75, 192, 192)',
@@ -160,12 +159,25 @@ function pokeChart() {
 	);
 }
 
-function filtraValors(arr) {
+function tiposLabels(arr) {
 	let temp = arr.flat();
 	temp.forEach((obj) => {
 		if (!arrayLabels.includes(obj)) {
 			arrayLabels.push(obj);
-		}
+		} 
 	}); 
 	// arrayLabels.push(...new Set(arr.flat())); ---> Set solo obtiene valores únicos
+
+	return arrayLabels;
+}
+
+function comptaElements(arr) {
+    let n = arr.flat();
+	let quantitat = [];
+    n.forEach((el) => { 
+		if(quantitat[el]) quantitat[el]++;
+		else quantitat[el] = 1; 
+	});
+	console.log(Object.values(quantitat));
+	return Object.values(quantitat);
 }
