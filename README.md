@@ -22,6 +22,10 @@ Crea les següents funcions:
 
 * **printList**: Crea una taula i mitjançant el DOM mostris el resultat en el div resultat.
 
+![Taula Pokemons](./style/img/taulapokemons.png)
+
 #### **Part 2.** Creem un gràfic
 
 A través de la llibreria Chart.js crearem un gràfic que ens mostrarà els pokemons en funció del seu tipus.
+
+![PokeChart](./style/img/pokechart.png)

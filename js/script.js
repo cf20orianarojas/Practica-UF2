@@ -1,5 +1,8 @@
 let dades = [];
 let pokemon = [];
+let municipis = [];
+let pelicules = [];
+let meteorites = [];
 
 // Array per a el gràfic Chart
 let arrayLabels = [];
@@ -19,11 +22,11 @@ fetch("js/data/pokemon.json")
 		// el peso sera float para hacer la media luego
 		let pes = obj.weight.substring(0, obj.weight.length-3);
 		dades.push({ Pokemon: obj.name});
-		pokemon.push({ num: obj.num, imatge: obj.img, nom: obj.name, pes: pes});
+		pokemon.push({ id: obj.num, imatge: obj.img, nom: obj.name, value: pes});
 		// obté tots els tipus
 		tmp.push(obj.type);
 	});
-	printList(pokemon);
+	// printList(pokemon);
 });
 
 // MUNICIPIS
@@ -36,7 +39,9 @@ fetch("js/data/municipis.json")
 			...dades[index],
 			Municipis: obj.municipi_nom
 		}
+		municipis.push({ id: obj.ine, imatge: obj.municipi_escut, nom: obj.municipi_nom, value: obj.extensio });
 	});	
+	// printList(municipis);
 });
 
 // MOVIES
@@ -49,7 +54,9 @@ fetch("js/data/movies.json")
 			...dades[index],
 			Pelicules: obj.title
 		}
+		pelicules.push({ id: obj.year, imatge: obj.url, nom: obj.title, value: obj.rating  });
 	});
+	// printList(pelicules);
 });
 
 // METEORITS
@@ -62,7 +69,13 @@ fetch("js/data/earthMeteorites.json")
 			...dades[index],
 			earthMeteorite: obj.name
 		}
+		meteorites.push({ 
+			id: obj.id, 
+			imatge: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmeteorites.tripod.com%2Fgallery%2FANTIMET.GIF&f=1&nofb=1&ipt=5838914745c6c21beae7da4f90096be538bbe773b2072a47c6c078fbb466bf7b&ipo=images", 
+			nom: obj.name, 
+			value: obj.mass});
 	});
+	// printList(meteorites);
 	// console.table(dades);
 });
 
@@ -90,15 +103,18 @@ function orderList(ordre) {
 
 // Cerca el objecte (per el num o per el nom) i mostra el index de la posició
 function searchList() {	
-	let posicio = prompt("Que cerques?");
+	let nom = prompt("Que cerques?").toLowerCase();
 	let index = -1;
+	let resultat = [];
 	pokemon.forEach(obj => {
-		if (obj.num == posicio || obj.nom.toLowerCase() == posicio.toLowerCase()) {
+		if (obj.nom.toLowerCase() == nom || obj.nom.toLowerCase().includes(nom)) {
 			index = pokemon.indexOf(obj);
+			resultat.push(obj);
 		}
 	});
-	alert(`El element "${posicio}" esta en la posició nº ${index} del array`);
-	return index;
+	printList(resultat);
+	// alert(`El element "${posicio}" esta en la posició nº ${index} del array`);
+	// return index;
 }
 	
 function calcMitjana(valor) {
@@ -107,7 +123,7 @@ function calcMitjana(valor) {
 	let p = document.createElement('p');
 	pokemon.forEach((pokemon) => {
 		// suma el pes total de tots els pokemons
-		suma+=parseInt(pokemon.pes);
+		suma+=parseInt(pokemon.value);
 	});
 	mitja = suma / pokemon.length;
 	p.innerHTML = mitja.toFixed(2) + ' kg';
@@ -121,15 +137,15 @@ function printList(array) {
 	taula+="<th>#</th><th>Imatge</th><th>Nom</th><th>Pes</th>"
 	array.forEach((obj) => {
 		taula+="<tr>";
-			taula+=`<td>${obj.num}</td>`;
+			taula+=`<td>${obj.id}</td>`;
 			taula+=`<td><img src="${obj.imatge}"/></td>`; 
 			taula+=`<td>${obj.nom}</td>`;
-			taula+=`<td>${obj.pes} kg</td>`;
+			taula+=`<td>${obj.value}</td>`;
 		taula+="</tr>";
 	});
 	taula+="</table>";
 	document.getElementById("resultat").innerHTML = taula;
-	pokeChart();
+	// pokeChart();
 }
 
 /* Part 2 */
@@ -180,10 +196,10 @@ function comptaElements(arr) {
 
 function randomColor() {
 	let color = '';
-	for(let i = 0; i < arrayLabels.length; i++) {
+	arrayLabels.forEach((obj, i) => { 
 		color = `rgba(${Math.floor(Math.random() * (255 - 0)) + 0}, ${Math.floor(Math.random() * (255 - 0)) + 0}, ${Math.floor(Math.random() * (255 - 0)) + 0})`;
 		borderColor.push(color);
 		background = `${borderColor[i].substring(0, color.length - 1)}, 0.2)`;
 		backgroundColor.push(background);
-	}
+	});
 }
