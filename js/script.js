@@ -99,31 +99,42 @@ function orderList(ordre) {
 }
 
 // Cerca el objecte (per el num o per el nom) i mostra el index de la posició
-function searchList() {
-    let nom = prompt("Que cerques?").toLowerCase();
-    let index = -1;
-    let resultat = [];
-    pokemon.forEach(obj => {
-        if (obj.nom.toLowerCase() == nom || obj.nom.toLowerCase().includes(nom)) {
-            resultat.push(obj);
-        }
-    });
-    printList(resultat);
-}
+document.addEventListener('DOMContentLoaded', function() {
+    function searchList() {
+        let resultat = [];
+        // let nom = prompt("Que cerques?").toLowerCase();
+        
+        let inputSearch = document.getElementById('txtSearch');
+            inputSearch.addEventListener('input', (e) => {
+            console.log(inputSearch.value)
+        });
+
+        // pokemon.forEach(obj => {
+        //     if (obj.nom.toLowerCase() == nom || obj.nom.toLowerCase().includes(nom)) {
+        //         resultat.push(obj);
+        //     }
+        // });
+        //printList(resultat);
+    }
+    searchList();
+});
 
 function calcMitjana() {
     let mitja = 0, suma = 0;
     let div = document.getElementById('btn-func');
     let p = document.createElement('p');
-    pokemon.forEach((pokemon) => {
+    let array = arraySelect();
+    array.forEach((el) => {
         // suma el pes total de tots els pokemons
-        suma+=parseInt(pokemon.value);
+        suma+=parseInt(el.value);
     });
-    mitja = suma / pokemon.length;
+    mitja = suma / array.length;
     p.innerHTML = mitja.toFixed(2) + ' kg';
     div.appendChild(p);
     alert(`Mitja: ${mitja.toFixed(2)} kg`);
 }
+
+let count = 0;
 
 // imprime la taula
 function printList(array) {
@@ -134,16 +145,18 @@ function printList(array) {
         taula+=`<td>${obj.id}</td>`;
         taula+=`<td><img src="${obj.imatge}"/></td>`;
         taula+=`<td>${obj.nom}</td>`;
-        taula+=`<td>${obj.value}</td>`;
+        taula+=`<td>${obj.value} ${unitat()}</td>`;
         taula+="</tr>";
     });
     taula+="</table>";
     document.getElementById("resultat").innerHTML = taula;
 
-    if (document.getElementById('data').value == 'Pokemon') {
-        pokeChart();
+    if (document.getElementById('data').value == 'pokemon' && count == 0) {
+        botonGraf();
+        count++;
     } 
 }
+count = 0;
 
 /* Part 2 */
 
@@ -157,7 +170,7 @@ function pokeChart() {
             borderColor: borderColor,
         }]
     };
-    randomColor()
+    randomColor();
 
     const config = {
         type: 'polarArea',
@@ -219,4 +232,29 @@ function arraySelect() {
             break;
     }
     return arr;
+}
+
+function unitat() {
+    let unitat = "";
+    let data = document.getElementById('data').value;
+    switch(data) {
+        case "pokemon":
+            unitat = "kg";
+            break;
+        case "municipis":
+            unitat = "hab";
+            break;
+        case "meteorites":
+            unitat = "kg";
+            break;
+    }
+    return unitat;
+}
+
+function botonGraf() {
+    let btn = document.createElement('button');
+    btn.className = "Chart";
+    btn.textContent = "Gràfic";
+    btn.onclick = pokeChart;
+    document.getElementById('btn-func').appendChild(btn);
 }
