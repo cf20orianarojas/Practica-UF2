@@ -81,42 +81,35 @@ fetch("js/data/earthMeteorites.json")
 // Ordena asc o desc
 function orderList(ordre) {
     let ordenat = [];
+    let arr = arraySelect();
     if (ordre === 'ASC') {
-        ordenat = pokemon.sort((a,b) => {
+        ordenat = arr.sort((a,b) => {
             if (a.nom - b.nom) return -1;
             if (a.nom > b.nom) return 1;
             return 0;
         });
     } else {
-        ordenat = pokemon.reverse((a,b) => {
+        ordenat = arr.reverse((a,b) => {
             if (b.nom < a.nom) return -1;
             if (b.nom > a.nom) return 1;
             return 0;
         });
     }
-    printList(ordenat);
+    printNewList(ordenat);
     return ordenat;
 }
 
 // Cerca el objecte (per el num o per el nom) i mostra el index de la posició
 document.addEventListener('DOMContentLoaded', function() {
-    function searchList() {
-        let resultat = [];
-        // let nom = prompt("Que cerques?").toLowerCase();
-        
-        let inputSearch = document.getElementById('txtSearch');
-            inputSearch.addEventListener('input', (e) => {
-            console.log(inputSearch.value)
-        });
-
-        // pokemon.forEach(obj => {
-        //     if (obj.nom.toLowerCase() == nom || obj.nom.toLowerCase().includes(nom)) {
-        //         resultat.push(obj);
-        //     }
-        // });
-        //printList(resultat);
-    }
-    searchList();
+    let resultat = [];   
+    let arr = arraySelect();
+    let inputSearch = document.getElementById('txtSearch');
+    
+    inputSearch.addEventListener('input', (e) => {
+        arr = arraySelect();
+        resultat = arr.filter(obj => obj.nom.toLowerCase() == inputSearch.value.toLowerCase() || obj.nom.toLowerCase().includes(inputSearch.value.toLowerCase()));
+        printNewList(resultat);
+    });
 });
 
 function calcMitjana() {
@@ -151,12 +144,27 @@ function printList(array) {
     taula+="</table>";
     document.getElementById("resultat").innerHTML = taula;
 
-    if (document.getElementById('data').value == 'pokemon' && count == 0) {
+    if (document.getElementById('data').value == 'pokemon') {
         botonGraf();
-        count++;
+        return;
     } 
 }
 count = 0;
+
+function printNewList(array) {
+    let taula = "<table>";
+    taula+=array[0].header;
+    array.forEach((obj) => {
+        taula+="<tr>";
+        taula+=`<td>${obj.id}</td>`;
+        taula+=`<td><img src="${obj.imatge}"/></td>`;
+        taula+=`<td>${obj.nom}</td>`;
+        taula+=`<td>${obj.value} ${unitat()}</td>`;
+        taula+="</tr>";
+    });
+    taula+="</table>";
+    document.getElementById("resultat").innerHTML = taula;
+}
 
 /* Part 2 */
 
@@ -215,8 +223,8 @@ function randomColor() {
 }
 
 function arraySelect() {
-    let arr = [];
     let arg = document.getElementById('data').value;
+    let arr = [];
     switch(arg) {
         case "pokemon":
             arr = pokemon;
