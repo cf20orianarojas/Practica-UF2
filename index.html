@@ -12,11 +12,18 @@
 <body>
 	<!-- Funcions -->
 	<div id="btn-func">
+		<select name="data" id="data">
+			<option value="pokemon" onclick="printList(pokemon)">Pokemon</option>
+			<option value="municipis" onclick="printList(municipis)">Municipis</option>
+			<option value="pelicules" onclick="printList(pelicules)">Movies</option>
+			<option value="meteorites" onclick="printList(meteorites)">Meteorites</option>
+		</select>
 		<button onclick="location.reload()">Iniciar</button> <!-- Inicialitza tot -->
 		<button onclick="orderList('ASC')">Order ASC</button> <!-- Ordena ascendent -->
 		<button onclick="orderList('DESC')">Order DESC</button> <!-- Ordena descendent-->
-		<button onclick="searchList()">Search</button>
-		<button onclick="calcMitjana()">Mitjana pes</button>  <!-- Mitja -->
+		<input type="text" value="" id="txtSearch"/>
+		<!-- <button onclick="searchList()">Search</button> -->
+		<button onclick="calcMitjana()">Mitjana</button>  <!-- Mitja -->
 	</div>
 	<div id="resultat"></div>
 	<div class="chart-container">
