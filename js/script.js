@@ -21,12 +21,13 @@ fetch("js/data/pokemon.json")
     noms.forEach((obj) => {
         // el peso sera float para hacer la media luego
         let pes = obj.weight.substring(0, obj.weight.length-3);
-        dades.push({ Pokemon: obj.name});
-        pokemon.push({header: "<th>#</th><th>Imatge</th><th>Nom</th><th>Pes</th>", id: obj.num, imatge: obj.img, nom: obj.name, value: pes});
+        dades.push([obj.name]);
+        pokemon.push([obj.num, obj.img, obj.name, pes]);
         // obté tots els tipus
         tmp.push(obj.type);
     });
 });
+
 
 // MUNICIPIS
 fetch("js/data/municipis.json")
@@ -38,7 +39,7 @@ fetch("js/data/municipis.json")
             ...dades[index],
             Municipis: obj.municipi_nom
         }
-        municipis.push({header: "<th>Codi postal</th><th>Escut</th><th>Nom</th><th>Població</th>", id: obj.grup_ajuntament.codi_postal, imatge: obj.municipi_escut, nom: obj.municipi_nom, value: obj.nombre_habitants });
+        municipis.push([ obj.grup_ajuntament.codi_postal, obj.municipi_escut, obj.municipi_nom, obj.nombre_habitants ]);
     });
 });
 
@@ -52,7 +53,7 @@ fetch("js/data/movies.json")
             ...dades[index],
             Pelicules: obj.title
         }
-        pelicules.push({header: "<th>Any</th><th>Poster</th><th>Titol</th><th>Ranting</th>", id: obj.year, imatge: obj.url, nom: obj.title, value: obj.rating  });
+        pelicules.push([obj.year, obj.url, obj.title, obj.rating  ]);
     });
 });
 
@@ -66,12 +67,7 @@ fetch("js/data/earthMeteorites.json")
             ...dades[index],
             earthMeteorite: obj.name
         }
-        meteorites.push({
-            header: "<th>id</th><th>Imatge</th><th>Nom</th><th>Massa</th>",
-            id: obj.id,
-            imatge: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmeteorites.tripod.com%2Fgallery%2FANTIMET.GIF&f=1&nofb=1&ipt=5838914745c6c21beae7da4f90096be538bbe773b2072a47c6c078fbb466bf7b&ipo=images",
-            nom: obj.name,
-            value: obj.mass});
+        meteorites.push([obj.id, "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmeteorites.tripod.com%2Fgallery%2FANTIMET.GIF&f=1&nofb=1&ipt=5838914745c6c21beae7da4f90096be538bbe773b2072a47c6c078fbb466bf7b&ipo=images", obj.name, obj.mass]);
     });
     // console.table(dades);
 });
@@ -82,16 +78,17 @@ fetch("js/data/earthMeteorites.json")
 function orderList(ordre) {
     let ordenat = [];
     let arr = arraySelect();
+
     if (ordre === 'ASC') {
         ordenat = arr.sort((a,b) => {
-            if (a.nom - b.nom) return -1;
-            if (a.nom > b.nom) return 1;
+            if (a[2] - b[2]) return -1;
+            if (a[2] > b[2]) return 1;
             return 0;
         });
     } else {
         ordenat = arr.reverse((a,b) => {
-            if (b.nom < a.nom) return -1;
-            if (b.nom > a.nom) return 1;
+            if (b[2] < a[2]) return -1;
+            if (b[2] > a[2]) return 1;
             return 0;
         });
     }
@@ -119,12 +116,12 @@ function calcMitjana() {
     let array = arraySelect();
     array.forEach((el) => {
         // suma el pes total de tots els pokemons
-        suma+=parseInt(el.value);
+        suma+=parseInt(el[3]);
     });
     mitja = suma / array.length;
-    p.innerHTML = mitja.toFixed(2) + ' kg';
+    p.innerHTML = mitja.toFixed(2) + " " + unitat();
     div.appendChild(p);
-    alert(`Mitja: ${mitja.toFixed(2)} kg`);
+    alert(`Mitja: ${mitja.toFixed(2) + unitat()}`);
 }
 
 let count = 0;
@@ -132,13 +129,13 @@ let count = 0;
 // imprime la taula
 function printList(array) {
     let taula = "<table>";
-    taula+=array[0].header;
+    taula+=tableHeader();
     array.forEach((obj) => {
         taula+="<tr>";
-        taula+=`<td>${obj.id}</td>`;
-        taula+=`<td><img src="${obj.imatge}"/></td>`;
-        taula+=`<td>${obj.nom}</td>`;
-        taula+=`<td>${obj.value} ${unitat()}</td>`;
+        taula+=`<td>${obj[0]}</td>`;
+        taula+=`<td><img src="${obj[1]}"/></td>`;
+        taula+=`<td>${obj[2]}</td>`;
+        taula+=`<td>${obj[3]} ${unitat()}</td>`;
         taula+="</tr>";
     });
     taula+="</table>";
@@ -153,13 +150,13 @@ count = 0;
 
 function printNewList(array) {
     let taula = "<table>";
-    taula+=array[0].header;
+    taula+=tableHeader();
     array.forEach((obj) => {
         taula+="<tr>";
-        taula+=`<td>${obj.id}</td>`;
-        taula+=`<td><img src="${obj.imatge}"/></td>`;
-        taula+=`<td>${obj.nom}</td>`;
-        taula+=`<td>${obj.value} ${unitat()}</td>`;
+        taula+=`<td>${obj[0]}</td>`;
+        taula+=`<td><img src="${obj[1]}"/></td>`;
+        taula+=`<td>${obj[2]}</td>`;
+        taula+=`<td>${obj[3]} ${unitat()}</td>`;
         taula+="</tr>";
     });
     taula+="</table>";
@@ -257,6 +254,27 @@ function unitat() {
             break;
     }
     return unitat;
+}
+
+// Retorna el header de la taula de cada array
+function tableHeader() {
+    let header = "";
+    let data = document.getElementById('data').value;
+    switch(data) {
+        case "pokemon":
+            header = "<th>#</th><th>Imatge</th><th>Nom</th><th>Pes</th>";
+            break;
+        case "municipis":
+            header = "<th>Codi postal</th><th>Escut</th><th>Nom</th><th>Població</th>";
+            break;
+        case "pelicules": 
+            header = "<th>Any</th><th>Poster</th><th>Titol</th><th>Ranting</th>";
+            break;
+        case "meteorites":
+            header = "<th>id</th><th>Imatge</th><th>Nom</th><th>Massa</th>";
+            break;
+    }
+    return header;
 }
 
 function botonGraf() {
