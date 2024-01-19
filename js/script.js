@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     inputSearch.addEventListener('input', (e) => {
         arr = arraySelect();
-        resultat = arr.filter(obj => obj.nom.toLowerCase() == inputSearch.value.toLowerCase() || obj.nom.toLowerCase().includes(inputSearch.value.toLowerCase()));
+        resultat = arr.filter(obj => obj[2].toLowerCase() == inputSearch.value.toLowerCase() || obj[2].toLowerCase().includes(inputSearch.value.toLowerCase()));
         printNewList(resultat);
     });
 });
@@ -121,7 +121,7 @@ function calcMitjana() {
     mitja = suma / array.length;
     p.innerHTML = mitja.toFixed(2) + " " + unitat();
     div.appendChild(p);
-    alert(`Mitja: ${mitja.toFixed(2) + unitat()}`);
+    // alert(`Mitja: ${mitja.toFixed(2) + unitat()}`);
 }
 
 let count = 0;
@@ -151,7 +151,7 @@ count = 0;
 function printNewList(array) {
     let taula = "<table>";
     taula+=tableHeader();
-    array.forEach((obj) => {
+    array.forEach((obj, index) => {
         taula+="<tr>";
         taula+=`<td>${obj[0]}</td>`;
         taula+=`<td><img src="${obj[1]}"/></td>`;
@@ -262,16 +262,16 @@ function tableHeader() {
     let data = document.getElementById('data').value;
     switch(data) {
         case "pokemon":
-            header = "<th>#</th><th>Imatge</th><th>Nom</th><th>Pes</th>";
+            header = "<th id='0'>#</th><th id='1'>Imatge</th><th id='2'>Nom</th><th id='3'>Pes</th>";
             break;
         case "municipis":
-            header = "<th>Codi postal</th><th>Escut</th><th>Nom</th><th>Població</th>";
+            header = "<th id='0'>Codi postal<i class='fa-solid fa-arrow-up fa-2xs' style='color: #c0c0c0;'></i></th><th id='1'>Escut</th><th id='2'>Nom</th><th id='3'>Població</th>";
             break;
         case "pelicules": 
-            header = "<th>Any</th><th>Poster</th><th>Titol</th><th>Ranting</th>";
+            header = "<th id='0'>Any<i class='fa-solid fa-arrow-up fa-beat fa-2xs' style='color: #c0c0c0;'></i></th><th id='1'>Poster</th><th id='2'>Titol</th><th id='3'>Ranting</th>";
             break;
         case "meteorites":
-            header = "<th>id</th><th>Imatge</th><th>Nom</th><th>Massa</th>";
+            header = "<th id='0'>id<i class='fa-solid fa-arrow-up fa-beat fa-2xs' style='color: #c0c0c0;'></i></th><th id='1'>Imatge</th><th id='2'>Nom</th><th id='3'>Massa</th>";
             break;
     }
     return header;
@@ -283,4 +283,8 @@ function botonGraf() {
     btn.textContent = "Gràfic";
     btn.onclick = pokeChart;
     document.getElementById('btn-func').appendChild(btn);
+}
+
+function orderBy() {
+
 }
