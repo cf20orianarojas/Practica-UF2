@@ -13,6 +13,10 @@ th {
     border-bottom: 2px solid rgb(206, 206, 206);
 }
 
+th {
+    cursor: pointer;
+}
+
 tr {
     border-top: 2px solid rgb(226, 226, 226);
 }

@@ -76,38 +76,24 @@ fetch("js/data/earthMeteorites.json")
 
 // Ordena asc o desc
 function orderList(ordre) {
-    let ordenat = [];
     let arr = arraySelect();
 
     if (ordre === 'ASC') {
-        ordenat = arr.sort((a,b) => {
+        arr = arr.sort((a,b) => {
             if (a[2] - b[2]) return -1;
             if (a[2] > b[2]) return 1;
             return 0;
         });
     } else {
-        ordenat = arr.reverse((a,b) => {
+        arr = arr.reverse((a,b) => {
             if (b[2] < a[2]) return -1;
             if (b[2] > a[2]) return 1;
             return 0;
         });
     }
-    printNewList(ordenat);
-    return ordenat;
+    printNewList(arr);
+    //return ordenat;
 }
-
-// Cerca el objecte (per el num o per el nom) i mostra el index de la posició
-document.addEventListener('DOMContentLoaded', function() {
-    let resultat = [];   
-    let arr = arraySelect();
-    let inputSearch = document.getElementById('txtSearch');
-    
-    inputSearch.addEventListener('input', (e) => {
-        arr = arraySelect();
-        resultat = arr.filter(obj => obj[2].toLowerCase() == inputSearch.value.toLowerCase() || obj[2].toLowerCase().includes(inputSearch.value.toLowerCase()));
-        printNewList(resultat);
-    });
-});
 
 function calcMitjana() {
     let mitja = 0, suma = 0;
@@ -123,8 +109,6 @@ function calcMitjana() {
     div.appendChild(p);
     // alert(`Mitja: ${mitja.toFixed(2) + unitat()}`);
 }
-
-let count = 0;
 
 // imprime la taula
 function printList(array) {
@@ -146,7 +130,6 @@ function printList(array) {
         return;
     } 
 }
-count = 0;
 
 function printNewList(array) {
     let taula = "<table>";
@@ -169,7 +152,7 @@ function pokeChart() {
     const data = {
         labels: tiposLabels(tmp),
         datasets: [{
-            label: 'My First Dataset',
+            label: 'Total',
             data: comptaElements(tmp),
             backgroundColor: backgroundColor,
             borderColor: borderColor,
@@ -181,16 +164,16 @@ function pokeChart() {
         type: 'polarArea',
         data: data
     };
-
+    
     const myChart = new Chart(
         document.getElementById('myChart'),
         config
-    );
-}
-
-function tiposLabels(arr) {
-    let temp = arr.flat();
-    temp.forEach((obj) => {
+        );
+    }
+    
+    function tiposLabels(arr) {
+        let temp = arr.flat();
+        temp.forEach((obj) => {
         if (!arrayLabels.includes(obj)) {
             arrayLabels.push(obj);
         }
@@ -219,6 +202,11 @@ function randomColor() {
     });
 }
 
+function botonGraf() {
+    let btn = `<button class="Chart" onclick="pokeChart()">Gràfic</button>`
+    document.getElementById('chart').innerHTML = btn;
+}
+
 function arraySelect() {
     let arg = document.getElementById('data').value;
     let arr = [];
@@ -229,7 +217,7 @@ function arraySelect() {
         case "municipis":
             arr = municipis;
             break;
-        case "pelicules": 
+            case "pelicules": 
             arr = pelicules;
             break;
         case "meteorites":
@@ -249,12 +237,27 @@ function unitat() {
         case "municipis":
             unitat = "hab";
             break;
-        case "meteorites":
-            unitat = "kg";
+            case "meteorites":
+                unitat = "kg";
             break;
     }
     return unitat;
 }
+
+/* Pas 3 */
+
+// Cerca el objecte (per el num o per el nom) i mostra el index de la posició
+document.addEventListener('DOMContentLoaded', function() {
+    let resultat = [];   
+    let arr = arraySelect();
+    let inputSearch = document.getElementById('txtSearch');
+    
+    inputSearch.addEventListener('input', (e) => {
+        arr = arraySelect();
+        resultat = arr.filter(obj => obj[2].toLowerCase() == inputSearch.value.toLowerCase() || obj[2].toLowerCase().includes(inputSearch.value.toLowerCase()));
+        printNewList(resultat);
+    });
+});
 
 // Retorna el header de la taula de cada array
 function tableHeader() {
@@ -262,29 +265,41 @@ function tableHeader() {
     let data = document.getElementById('data').value;
     switch(data) {
         case "pokemon":
-            header = "<th id='0'>#</th><th id='1'>Imatge</th><th id='2'>Nom</th><th id='3'>Pes</th>";
+            header = `<th id=0 onclick='orderBy(0)'>#</th><th id=1>Imatge</th><th id=2 onclick='orderBy(2)'>Nom</th><th id=3 onclick='orderBy(3)'>Pes</th>`;
             break;
-        case "municipis":
-            header = "<th id='0'>Codi postal<i class='fa-solid fa-arrow-up fa-2xs' style='color: #c0c0c0;'></i></th><th id='1'>Escut</th><th id='2'>Nom</th><th id='3'>Població</th>";
-            break;
-        case "pelicules": 
-            header = "<th id='0'>Any<i class='fa-solid fa-arrow-up fa-beat fa-2xs' style='color: #c0c0c0;'></i></th><th id='1'>Poster</th><th id='2'>Titol</th><th id='3'>Ranting</th>";
-            break;
-        case "meteorites":
-            header = "<th id='0'>id<i class='fa-solid fa-arrow-up fa-beat fa-2xs' style='color: #c0c0c0;'></i></th><th id='1'>Imatge</th><th id='2'>Nom</th><th id='3'>Massa</th>";
+            case "municipis":
+                header = "<th id=0 onclick='orderBy(0)'>Codi postal</th><th id=1>Escut</th><th id=2 onclick='orderBy(2)'>Nom</th><th id=3 onclick='orderBy(3)'>Població</th>";
+                break;
+                case "pelicules": 
+                header = "<th id=0 onclick='orderBy(0)'>Any</th><th id=1>Poster</th><th id=2 onclick='orderBy(2)'>Titol</th><th id=3 onclick='orderBy(3)'>Ranting</th>";
+                break;
+                case "meteorites":
+            header = "<th id=0 onclick='orderBy(0)'>id</th><th id=1>Imatge</th><th id=2 onclick='orderBy(2)'>Nom</th><th id=3 onclick='orderBy(3)'>Massa</th>";
             break;
     }
     return header;
 }
 
-function botonGraf() {
-    let btn = document.createElement('button');
-    btn.className = "Chart";
-    btn.textContent = "Gràfic";
-    btn.onclick = pokeChart;
-    document.getElementById('btn-func').appendChild(btn);
-}
+let ord = 'asc';
 
-function orderBy() {
-
+// ordena por columnes
+function orderBy(index) {
+    let data = document.getElementById('data').value;
+    let arr = arraySelect(data);
+    
+    if (ord == 'asc') {
+        arr = arr.sort((a, b) => {
+            if (b[index] < a[index]) return -1;
+            if (b[index] > a[index]) return 1;
+            return 0;
+        });
+    } else {
+        arr = arr.sort((a, b) => {
+            if (a[index] < b[index]) return -1;
+            if (a[index] > b[index]) return 1;
+            return 0;
+        });
+    }
+    ord = ord == 'asc' ? 'desc' : 'asc'; 
+    printNewList(arr);
 }
