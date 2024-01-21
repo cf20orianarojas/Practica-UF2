@@ -22,7 +22,7 @@ fetch("js/data/pokemon.json")
         // el peso sera float para hacer la media luego
         let pes = obj.weight.substring(0, obj.weight.length-3);
         dades.push([obj.name]);
-        pokemon.push([obj.num, obj.img, obj.name, parseFloat(pes)]);
+        pokemon.push({ id: obj.num, rsc: obj.img, nom: obj.name, num: parseFloat(pes)});
         // obté tots els tipus
         tmp.push(obj.type);
     });
@@ -39,7 +39,7 @@ fetch("js/data/municipis.json")
             ...dades[index],
             Municipis: obj.municipi_nom
         }
-        municipis.push([ parseInt(obj.grup_ajuntament.codi_postal), obj.municipi_escut, obj.municipi_nom, parseInt(obj.nombre_habitants) ]);
+        municipis.push({ id: parseInt(obj.grup_ajuntament.codi_postal), rsc : obj.municipi_escut, nom: obj.municipi_nom, num: parseInt(obj.nombre_habitants) });
     });
 });
 
@@ -53,7 +53,7 @@ fetch("js/data/movies.json")
             ...dades[index],
             Pelicules: obj.title
         }
-        pelicules.push([obj.year, obj.url, obj.title, obj.rating  ]);
+        pelicules.push({ id: obj.year, rsc: obj.url, nom: obj.title, num: obj.rating  });
     });
 });
 
@@ -67,7 +67,8 @@ fetch("js/data/earthMeteorites.json")
             ...dades[index],
             earthMeteorite: obj.name
         }
-        meteorites.push([parseInt(obj.id), "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmeteorites.tripod.com%2Fgallery%2FANTIMET.GIF&f=1&nofb=1&ipt=5838914745c6c21beae7da4f90096be538bbe773b2072a47c6c078fbb466bf7b&ipo=images", obj.name, parseInt(obj.mass)]);
+        let year = obj.year.slice(0, 10); 
+        meteorites.push({ id: parseInt(obj.id), rsc: year , nom: obj.name, num: parseInt(obj.mass)});
     });
     // console.table(dades);
 });
@@ -80,14 +81,14 @@ function orderList(ordre) {
 
     if (ordre === 'ASC') {
         arr = arr.sort((a,b) => {
-            if (a[2] - b[2]) return -1;
-            if (a[2] > b[2]) return 1;
+            if (a.nom - b.nom) return -1;
+            if (a.nom > b.nom) return 1;
             return 0;
         });
     } else {
         arr = arr.reverse((a,b) => {
-            if (b[2] < a[2]) return -1;
-            if (b[2] > a[2]) return 1;
+            if (b.nom < a.nom) return -1;
+            if (b.nom > a.nom) return 1;
             return 0;
         });
     }
@@ -102,7 +103,7 @@ function calcMitjana() {
     let array = arraySelect();
     array.forEach((el) => {
         // suma el pes total de tots els pokemons
-        suma+=parseInt(el[3]);
+        suma+=parseInt(el.num);
     });
     mitja = suma / array.length;
     p.innerHTML = mitja.toFixed(2) + " " + unitat();
@@ -112,20 +113,21 @@ function calcMitjana() {
 
 // imprime la taula
 function printList(array) {
+    let data = document.getElementById('data').value;
     let taula = "<table>";
     taula+=tableHeader();
     array.forEach((obj) => {
         taula+="<tr>";
-        taula+=`<td>${obj[0]}</td>`;
-        taula+=`<td><img src="${obj[1]}"/></td>`;
-        taula+=`<td>${obj[2]}</td>`;
-        taula+=`<td>${obj[3]} ${unitat()}</td>`;
+        taula+=`<td>${obj.id}</td>`;
+        taula+=data != 'meteorites' ? `<td><img src="${obj.rsc}"/></td>` : `<td>${obj.rsc}</td>`;
+        taula+=`<td>${obj.nom}</td>`;
+        taula+=`<td>${obj.num} ${unitat()}</td>`;
         taula+="</tr>";
     });
     taula+="</table>";
     document.getElementById("resultat").innerHTML = taula;
 
-    if (document.getElementById('data').value == 'pokemon') {
+    if (data == 'pokemon') {
         botonGraf();
         return;
     } else {
@@ -134,14 +136,15 @@ function printList(array) {
 }
 
 function printNewList(array) {
+    let data = document.getElementById('data').value;
     let taula = "<table>";
     taula+=tableHeader();
     array.forEach((obj, index) => {
         taula+="<tr>";
-        taula+=`<td>${obj[0]}</td>`;
-        taula+=`<td><img src="${obj[1]}"/></td>`;
-        taula+=`<td>${obj[2]}</td>`;
-        taula+=`<td>${obj[3]} ${unitat()}</td>`;
+        taula+=`<td>${obj.id}</td>`;
+        taula+=data != 'meteorites' ? `<td><img src="${obj.rsc}"/></td>` : `<td>${obj.rsc}</td>`;;
+        taula+=`<td>${obj.nom}</td>`;
+        taula+=`<td>${obj.num} ${unitat()}</td>`;
         taula+="</tr>";
     });
     taula+="</table>";
@@ -258,7 +261,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     inputSearch.addEventListener('input', (e) => {
         arr = arraySelect();
-        resultat = arr.filter(obj => obj[2].toLowerCase() == inputSearch.value.toLowerCase() || obj[2].toLowerCase().includes(inputSearch.value.toLowerCase()));
+        resultat = arr.filter(obj => obj.nom.toLowerCase() == inputSearch.value.toLowerCase() || obj.nom.toLowerCase().includes(inputSearch.value.toLowerCase()));
         printNewList(resultat);
     });
 });
@@ -269,16 +272,16 @@ function tableHeader() {
     let data = document.getElementById('data').value;
     switch(data) {
         case "pokemon":
-            header = `<th id=0 onclick='orderBy(0)'>#</th><th id=1>Imatge</th><th id=2 onclick='orderBy(2)'>Nom</th><th id=3 onclick='orderBy(3)'>Pes</th>`;
+            header = `<th id=0 onclick='orderBy("id")'>#</th><th id=1>Imatge</th><th id=2 onclick='orderBy("nom")'>Nom</th><th id=3 onclick='orderBy("num")'>Pes</th>`;
             break;
             case "municipis":
-                header = "<th id=0 onclick='orderBy(0)'>Codi postal</th><th id=1>Escut</th><th id=2 onclick='orderBy(2)'>Nom</th><th id=3 onclick='orderBy(3)'>Població</th>";
+                header = `<th id=0 onclick='orderBy("id")'>Codi postal</th><th id=1>Escut</th><th id=2 onclick='orderBy("nom")'>Nom</th><th id=3 onclick='orderBy("num")'>Població</th>`;
                 break;
                 case "pelicules": 
-                header = "<th id=0 onclick='orderBy(0)'>Any</th><th id=1>Poster</th><th id=2 onclick='orderBy(2)'>Titol</th><th id=3 onclick='orderBy(3)'>Ranting</th>";
+                header = `<th id=0 onclick='orderBy("id")'>Any</th><th id=1>Poster</th><th id=2 onclick='orderBy("nom")'>Titol</th><th id=3 onclick='orderBy("num")'>Ranting</th>`;
                 break;
                 case "meteorites":
-            header = "<th id=0 onclick='orderBy(0)'>id</th><th id=1>Imatge</th><th id=2 onclick='orderBy(2)'>Nom</th><th id=3 onclick='orderBy(3)'>Massa</th>";
+            header = `<th id=0 onclick='orderBy("id")'>id</th><th id=1>Year</th><th id=2 onclick='orderBy("nom")'>Nom</th><th id=3 onclick='orderBy("num")'>Massa</th>`;
             break;
     }
     return header;
@@ -287,20 +290,20 @@ function tableHeader() {
 let ord = 'asc';
 
 // ordena por columnes
-function orderBy(index) {
+function orderBy(prop) {
     let data = document.getElementById('data').value;
     let arr = arraySelect(data);
 
     if (ord == 'asc') {
         arr = arr.sort((a, b) => {
-            if (b[index] < a[index]) return -1;
-            if (b[index] > a[index]) return 1;
+            if (b[prop] < a[prop]) return -1;
+            if (b[prop] > a[prop]) return 1;
             return 0;
         });
     } else {
         arr = arr.sort((a, b) => {
-            if (a[index] < b[index]) return -1;
-            if (a[index] > b[index]) return 1;
+            if (a[prop] < b[prop]) return -1;
+            if (a[prop] > b[prop]) return 1;
             return 0;
         });
     }
