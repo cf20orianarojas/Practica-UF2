@@ -29,3 +29,22 @@ Crea les següents funcions:
 A través de la llibreria Chart.js crearem un gràfic que ens mostrarà els pokemons en funció del seu tipus.
 
 ![PokeChart](./style/img/pokechart.png)
+
+#### **Part 3.** Modifiquem les funcions per a que funcionin en arrays multidimensionals
+
+
+**Search**
+
+La funció search a mida que anem escrivint en el camp de cerca ens vagi mostrant els diferents elements.
+
+![Search](./style/img/search.png)
+
+**Order by**
+
+A la taula els ***thead*** són clicables, quan es fa clic s'ordenan ascendent i descendent.
+
+**Sort by name:**
+![Sort by name](./style/img/sortbyname.png)
+
+**Sort by id:**
+![Sort by id](./style/img/sortbyid.png)
