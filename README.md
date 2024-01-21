@@ -44,7 +44,9 @@ La funció search a mida que anem escrivint en el camp de cerca ens vagi mostran
 A la taula els ***thead*** són clicables, quan es fa clic s'ordenan ascendent i descendent.
 
 **Sort by name:**
+
 ![Sort by name](./style/img/sortbyname.png)
 
 **Sort by id:**
+
 ![Sort by id](./style/img/sortbyid.png)
