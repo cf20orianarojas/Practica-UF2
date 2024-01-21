@@ -22,7 +22,7 @@ fetch("js/data/pokemon.json")
         // el peso sera float para hacer la media luego
         let pes = obj.weight.substring(0, obj.weight.length-3);
         dades.push([obj.name]);
-        pokemon.push([obj.num, obj.img, obj.name, pes]);
+        pokemon.push([obj.num, obj.img, obj.name, parseFloat(pes)]);
         // obté tots els tipus
         tmp.push(obj.type);
     });
@@ -39,7 +39,7 @@ fetch("js/data/municipis.json")
             ...dades[index],
             Municipis: obj.municipi_nom
         }
-        municipis.push([ obj.grup_ajuntament.codi_postal, obj.municipi_escut, obj.municipi_nom, obj.nombre_habitants ]);
+        municipis.push([ parseInt(obj.grup_ajuntament.codi_postal), obj.municipi_escut, obj.municipi_nom, parseInt(obj.nombre_habitants) ]);
     });
 });
 
@@ -67,7 +67,7 @@ fetch("js/data/earthMeteorites.json")
             ...dades[index],
             earthMeteorite: obj.name
         }
-        meteorites.push([obj.id, "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmeteorites.tripod.com%2Fgallery%2FANTIMET.GIF&f=1&nofb=1&ipt=5838914745c6c21beae7da4f90096be538bbe773b2072a47c6c078fbb466bf7b&ipo=images", obj.name, obj.mass]);
+        meteorites.push([parseInt(obj.id), "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmeteorites.tripod.com%2Fgallery%2FANTIMET.GIF&f=1&nofb=1&ipt=5838914745c6c21beae7da4f90096be538bbe773b2072a47c6c078fbb466bf7b&ipo=images", obj.name, parseInt(obj.mass)]);
     });
     // console.table(dades);
 });
@@ -128,7 +128,9 @@ function printList(array) {
     if (document.getElementById('data').value == 'pokemon') {
         botonGraf();
         return;
-    } 
+    } else {
+        document.getElementById('chart').innerHTML = '';
+    }
 }
 
 function printNewList(array) {
@@ -203,8 +205,10 @@ function randomColor() {
 }
 
 function botonGraf() {
-    let btn = `<button class="Chart" onclick="pokeChart()">Gràfic</button>`
-    document.getElementById('chart').innerHTML = btn;
+    if (document.getElementById('data').value == 'pokemon') {
+        let btn = `<button class="Chart" onclick="pokeChart()">Gràfic</button>`
+        document.getElementById('chart').innerHTML = btn;
+    } 
 }
 
 function arraySelect() {
@@ -286,7 +290,7 @@ let ord = 'asc';
 function orderBy(index) {
     let data = document.getElementById('data').value;
     let arr = arraySelect(data);
-    
+
     if (ord == 'asc') {
         arr = arr.sort((a, b) => {
             if (b[index] < a[index]) return -1;
