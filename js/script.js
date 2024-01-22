@@ -67,8 +67,7 @@ fetch("js/data/earthMeteorites.json")
             ...dades[index],
             earthMeteorite: obj.name
         }
-        let year = obj.year.slice(0, 10); 
-        meteorites.push({ id: parseInt(obj.id), rsc: year , nom: obj.name, num: parseInt(obj.mass)});
+        meteorites.push({ id: parseInt(obj.id), rsc: obj.recclass, nom: obj.name, num: parseInt(obj.mass)});
     });
     // console.table(dades);
 });
@@ -81,14 +80,14 @@ function orderList(ordre) {
 
     if (ordre === 'ASC') {
         arr = arr.sort((a,b) => {
-            if (a.nom - b.nom) return -1;
-            if (a.nom > b.nom) return 1;
+            if (a.id < b.id) return -1;
+            if (a.id > b.id) return 1;
             return 0;
         });
     } else {
         arr = arr.reverse((a,b) => {
-            if (b.nom < a.nom) return -1;
-            if (b.nom > a.nom) return 1;
+            if (b.id < a.id) return -1;
+            if (b.id > a.id) return 1;
             return 0;
         });
     }
@@ -133,16 +132,17 @@ function printList(array) {
     } else {
         document.getElementById('chart').innerHTML = '';
     }
+    
 }
 
 function printNewList(array) {
     let data = document.getElementById('data').value;
     let taula = "<table>";
     taula+=tableHeader();
-    array.forEach((obj, index) => {
+    array.forEach((obj) => {
         taula+="<tr>";
         taula+=`<td>${obj.id}</td>`;
-        taula+=data != 'meteorites' ? `<td><img src="${obj.rsc}"/></td>` : `<td>${obj.rsc}</td>`;;
+        taula+=data != 'meteorites' ? `<td><img src="${obj.rsc}"/></td>` : `<td>${obj.rsc}</td>`;
         taula+=`<td>${obj.nom}</td>`;
         taula+=`<td>${obj.num} ${unitat()}</td>`;
         taula+="</tr>";
@@ -154,6 +154,8 @@ function printNewList(array) {
 /* Part 2 */
 
 function pokeChart() {
+    document.getElementById('resultat').innerHTML = '';
+
     const data = {
         labels: tiposLabels(tmp),
         datasets: [{
@@ -224,7 +226,7 @@ function arraySelect() {
         case "municipis":
             arr = municipis;
             break;
-            case "pelicules": 
+        case "pelicules": 
             arr = pelicules;
             break;
         case "meteorites":
@@ -244,7 +246,7 @@ function unitat() {
         case "municipis":
             unitat = "hab";
             break;
-            case "meteorites":
+        case "meteorites":
                 unitat = "kg";
             break;
     }
@@ -281,7 +283,7 @@ function tableHeader() {
                 header = `<th id=0 onclick='orderBy("id")'>Any</th><th id=1>Poster</th><th id=2 onclick='orderBy("nom")'>Titol</th><th id=3 onclick='orderBy("num")'>Ranting</th>`;
                 break;
                 case "meteorites":
-            header = `<th id=0 onclick='orderBy("id")'>id</th><th id=1>Year</th><th id=2 onclick='orderBy("nom")'>Nom</th><th id=3 onclick='orderBy("num")'>Massa</th>`;
+            header = `<th id=0 onclick='orderBy("id")'>id</th><th id=1>Recclass</th><th id=2 onclick='orderBy("nom")'>Nom</th><th id=3 onclick='orderBy("num")'>Massa</th>`;
             break;
     }
     return header;
